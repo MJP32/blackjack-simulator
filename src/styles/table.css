@@ -2498,10 +2498,11 @@ select.settings-field__input {
 
   /* ---- Bankroll display ---- */
   .bankroll-display {
-    font-size: 12px;
+    font-size: 14px;
     position: fixed;
-    left: 10px;
-    bottom: 70px;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 20;
   }
 
