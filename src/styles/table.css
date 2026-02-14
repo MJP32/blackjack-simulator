@@ -1584,10 +1584,12 @@
 
 @media (max-width: 600px) {
   .decision-toast {
-    bottom: 12px;
-    right: 12px;
-    max-width: 85%;
-    padding: 12px 14px;
+    top: 8px;
+    right: 8px;
+    bottom: auto;
+    left: auto;
+    max-width: 55%;
+    padding: 10px 12px;
     gap: 10px;
   }
 
