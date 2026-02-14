@@ -22,7 +22,7 @@ const SPEEDS: { key: SpeedSetting; label: string }[] = [
   { key: 'instant', label: 'Instant' },
 ];
 
-export default function Header() {
+export default function Header({ onToggleMobileSidebar }: { onToggleMobileSidebar?: () => void }) {
   const mode = useSettingsStore(s => s.mode);
   const setMode = useSettingsStore(s => s.setMode);
   const speed = useSettingsStore(s => s.speed);
@@ -88,7 +88,7 @@ export default function Header() {
   return (
     <>
       <header className="header">
-        <span className="header__title">Blackjack Card Trainer</span>
+        <span className="header__title">Blackjack Trainer</span>
 
         <div className="header__controls">
           <div className="mode-selector">
@@ -129,6 +129,11 @@ export default function Header() {
           <Button variant="secondary" size="small" onClick={() => setShowSimulation(true)}>
             Simulate
           </Button>
+          {onToggleMobileSidebar && (
+            <Button variant="secondary" size="small" onClick={onToggleMobileSidebar} className="header__stats-btn">
+              Stats
+            </Button>
+          )}
         </div>
       </header>
 

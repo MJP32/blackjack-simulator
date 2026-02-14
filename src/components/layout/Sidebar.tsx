@@ -8,7 +8,7 @@ import BetAdvice from '@/components/counting/BetAdvice.js';
 import EVChart from '@/components/charts/EVChart.js';
 import { formatCurrency, formatPercent } from '@/utils/formatters.js';
 
-export default function Sidebar() {
+export default function Sidebar({ className = '' }: { className?: string }) {
   const shoeState = useGameStore(s => s.shoeState);
   const players = useGameStore(s => s.players);
   const showCount = useSettingsStore(s => s.showCount);
@@ -30,7 +30,7 @@ export default function Sidebar() {
   }
 
   return (
-    <div className={`sidebar ${tutorialHighlight ? 'sidebar--tutorial-active' : ''}`}>
+    <div className={`sidebar ${tutorialHighlight ? 'sidebar--tutorial-active' : ''} ${className}`}>
       {showCount && !guessTheCount && <CountPanel countInfo={shoeState.countInfo} highlight={hlClass('card-count')} />}
       <ShoeProgress shoeState={shoeState} highlight={hlClass('shoe-progress')} />
       {showBetAdvice && (

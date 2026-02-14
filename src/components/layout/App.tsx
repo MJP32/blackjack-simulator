@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameStore } from '@/stores/gameStore.js';
 import { useSettingsStore } from '@/stores/settingsStore.js';
 import Header from './Header.js';
@@ -11,6 +11,7 @@ export default function App() {
   const initGame = useGameStore(s => s.initGame);
   const settings = useSettingsStore();
   const mode = useSettingsStore(s => s.mode);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     initGame({
@@ -34,10 +35,17 @@ export default function App() {
   return (
     <div className="game-layout">
       <div className="game-main">
-        <Header />
+        <Header onToggleMobileSidebar={() => setMobileSidebarOpen(o => !o)} />
         <GameTable />
       </div>
-      {showSidebar && <Sidebar />}
+      {showSidebar && (
+        <>
+          {mobileSidebarOpen && (
+            <div className="sidebar-overlay" onClick={() => setMobileSidebarOpen(false)} />
+          )}
+          <Sidebar className={mobileSidebarOpen ? 'sidebar--mobile-open' : ''} />
+        </>
+      )}
       <TutorialOverlay />
       <GuessTheCount />
     </div>
