@@ -7,6 +7,8 @@ import PostSessionReport from '@/components/modes/PostSessionReport.js';
 import Modal from '@/components/shared/Modal.js';
 import Toggle from '@/components/shared/Toggle.js';
 import Button from '@/components/shared/Button.js';
+import StrategyChart from '@/components/rules/StrategyChart.js';
+import SimulationModal from '@/components/simulation/SimulationModal.js';
 
 const MODES: { key: GameMode; label: string }[] = [
   { key: 'training', label: 'Training' },
@@ -29,6 +31,9 @@ export default function Header() {
   const initGame = useGameStore(s => s.initGame);
   const [showReport, setShowReport] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showRules, setShowRules] = useState(false);
+  const [showStrategy, setShowStrategy] = useState(false);
+  const [showSimulation, setShowSimulation] = useState(false);
 
   // Local settings state for the modal
   const [localPlayers, setLocalPlayers] = useState(settings.numberOfAIPlayers + 1);
@@ -83,7 +88,7 @@ export default function Header() {
   return (
     <>
       <header className="header">
-        <span className="header__title">Blackjack Card Counting Trainer</span>
+        <span className="header__title">Blackjack Card Trainer</span>
 
         <div className="header__controls">
           <div className="mode-selector">
@@ -112,11 +117,17 @@ export default function Header() {
 
           <CasinoRealismHUD />
 
+          <Button variant="secondary" size="small" onClick={() => setShowRules(true)}>
+            Rules
+          </Button>
           <Button variant="secondary" size="small" onClick={openSettings}>
             Settings
           </Button>
           <Button variant="secondary" size="small" onClick={() => setShowReport(true)}>
             Report
+          </Button>
+          <Button variant="secondary" size="small" onClick={() => setShowSimulation(true)}>
+            Simulate
           </Button>
         </div>
       </header>
@@ -187,6 +198,67 @@ export default function Header() {
           <Toggle label="Show Tutorial" checked={settings.showTutorial} onChange={settings.setShowTutorial} />
         </div>
       </Modal>
+      <Modal
+        isOpen={showRules}
+        onClose={() => { setShowRules(false); setShowStrategy(false); }}
+        title={showStrategy ? 'Optimal Strategy' : 'Blackjack Rules'}
+        className={showStrategy ? 'modal--wide' : ''}
+        actions={
+          showStrategy
+            ? <Button variant="secondary" onClick={() => setShowStrategy(false)}>Back to Rules</Button>
+            : <Button variant="gold" onClick={() => { setShowRules(false); setShowStrategy(false); }}>Got It</Button>
+        }
+      >
+        {showStrategy ? (
+          <StrategyChart />
+        ) : (
+          <div className="rules-content">
+            <section className="rules-section">
+              <h3 className="rules-section__title">Objective</h3>
+              <p>Beat the dealer by getting a hand value closer to 21 without going over. Face cards (J, Q, K) are worth 10, Aces are worth 1 or 11, and all other cards are face value.</p>
+            </section>
+
+            <section className="rules-section">
+              <h3 className="rules-section__title">Blackjack</h3>
+              <p>An Ace + a 10-value card on the initial deal is a "Blackjack" and pays 3:2 (1.5x your bet), unless the dealer also has Blackjack, which is a push (tie).</p>
+            </section>
+
+            <section className="rules-section">
+              <h3 className="rules-section__title">Actions</h3>
+              <ul className="rules-list">
+                <li><strong>Hit</strong> — Take another card.</li>
+                <li><strong>Stand</strong> — Keep your current hand.</li>
+                <li><strong>Double Down</strong> — Double your bet and receive exactly one more card.</li>
+                <li><strong>Split</strong> — If you have two cards of the same value, split them into two separate hands with equal bets.</li>
+                <li><strong>Surrender</strong> — Forfeit half your bet and end the hand immediately.</li>
+              </ul>
+            </section>
+
+            <section className="rules-section">
+              <h3 className="rules-section__title">Dealer Rules</h3>
+              <p>The dealer must hit on 16 or less. With "Hit Soft 17" enabled (default), the dealer also hits on a soft 17 (Ace + 6). The dealer stands on hard 17 or higher.</p>
+            </section>
+
+            <section className="rules-section">
+              <h3 className="rules-section__title">Insurance</h3>
+              <p>When the dealer's face-up card is an Ace, you may take insurance — a side bet of half your original bet that pays 2:1 if the dealer has Blackjack. Basic strategy says always decline insurance.</p>
+            </section>
+
+            <section className="rules-section">
+              <h3 className="rules-section__title">Card Counting (Hi-Lo)</h3>
+              <p>Assign each card a value: <strong>2–6 = +1</strong>, <strong>7–9 = 0</strong>, <strong>10–A = −1</strong>. The running count is the sum of all counted cards. Divide by decks remaining to get the <strong>true count</strong>, which guides bet sizing — bet more when the count is high (deck favors the player).</p>
+            </section>
+
+            <div className="rules-section" style={{ textAlign: 'center', paddingTop: '8px' }}>
+              <Button variant="gold" onClick={() => setShowStrategy(true)}>
+                Optimal Strategy Chart
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      <SimulationModal isOpen={showSimulation} onClose={() => setShowSimulation(false)} />
     </>
   );
 }

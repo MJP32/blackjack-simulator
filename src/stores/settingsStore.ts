@@ -102,6 +102,21 @@ export const useSettingsStore = create<SettingsState>()(
       toggleShowBetAdvice: () => set((s) => ({ showBetAdvice: !s.showBetAdvice })),
       toggleShowBasicStrategyHint: () => set((s) => ({ showBasicStrategyHint: !s.showBasicStrategyHint })),
     }),
-    { name: 'blackjack-settings' }
+    {
+      name: 'blackjack-settings',
+      version: 2,
+      migrate: (persisted: any, version: number) => {
+        if (version < 2) {
+          // Old modes 'tutorial' and 'guess_the_count' were removed
+          if (persisted.mode === 'tutorial' || persisted.mode === 'guess_the_count') {
+            persisted.mode = 'training';
+          }
+          persisted.guessTheCount ??= false;
+          persisted.showTutorial ??= false;
+          persisted.humanSeatPosition ??= 3;
+        }
+        return persisted;
+      },
+    }
   )
 );

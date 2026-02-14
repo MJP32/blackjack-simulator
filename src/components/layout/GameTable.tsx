@@ -12,8 +12,6 @@ import HumanPlayer from '@/components/players/HumanPlayer.js';
 import BetControls from '@/components/betting/BetControls.js';
 import BankrollDisplay from '@/components/betting/BankrollDisplay.js';
 import Button from '@/components/shared/Button.js';
-import Modal from '@/components/shared/Modal.js';
-import Hand from '@/components/cards/Hand.js';
 import { formatCurrency } from '@/utils/formatters.js';
 import type { Action } from '@/engine/types.js';
 
@@ -217,44 +215,35 @@ export default function GameTable() {
         </div>
       )}
 
-      {/* Insurance prompt */}
-      <Modal
-        isOpen={phase === 'insurance_prompt'}
-        title="Insurance?"
-        actions={
-          <>
-            <Button variant="secondary" onClick={() => handleInsurance(false)}>
-              No <span className="kbd">N</span>
-            </Button>
-            <Button variant="primary" onClick={() => handleInsurance(true)}>
-              Yes (half bet) <span className="kbd">Y</span>
-            </Button>
-          </>
-        }
-      >
-        <div className="insurance-prompt">
-          <p className="insurance-prompt__question">
-            Dealer shows an Ace. Would you like to take insurance?
-          </p>
-          {humanPlayer && (
-            <div className="insurance-prompt__hands">
-              <div className="insurance-prompt__hand">
-                <span className="insurance-prompt__label">Your hand</span>
-                <Hand hand={humanPlayer.hands[0]} />
-              </div>
-              <div className="insurance-prompt__hand">
-                <span className="insurance-prompt__label">Dealer</span>
-                <Hand hand={dealerHand} showTotal={false} />
-              </div>
+      {/* Insurance prompt - bottom bar so cards stay visible */}
+      <AnimatePresence>
+        {phase === 'insurance_prompt' && (
+          <motion.div
+            className="insurance-bar"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.25 }}
+          >
+            <span className="insurance-bar__text">
+              Dealer shows an Ace — take insurance?
+              {humanPlayer && (
+                <span className="insurance-bar__cost">
+                  {' '}(costs {formatCurrency(humanPlayer.hands[0].bet / 2)})
+                </span>
+              )}
+            </span>
+            <div className="insurance-bar__actions">
+              <Button variant="secondary" onClick={() => handleInsurance(false)}>
+                No <span className="kbd">N</span>
+              </Button>
+              <Button variant="primary" onClick={() => handleInsurance(true)}>
+                Yes <span className="kbd">Y</span>
+              </Button>
             </div>
-          )}
-          {humanPlayer && (
-            <p className="insurance-prompt__bet-info">
-              Bet: {formatCurrency(humanPlayer.hands[0].bet)} — Insurance costs {formatCurrency(humanPlayer.hands[0].bet / 2)}
-            </p>
-          )}
-        </div>
-      </Modal>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Training mode: decision feedback toast */}
       <AnimatePresence>
@@ -271,8 +260,13 @@ export default function GameTable() {
             <div className="decision-toast__icon">
               {decisionFeedback.isCorrect ? '\u2713' : '\u2717'}
             </div>
-            <div className="decision-toast__text">
-              {getDecisionReasoning(decisionFeedback)}
+            <div className="decision-toast__content">
+              <div className="decision-toast__verdict">
+                {decisionFeedback.isCorrect ? 'Correct!' : 'Wrong!'}
+              </div>
+              <div className="decision-toast__text">
+                {getDecisionReasoning(decisionFeedback)}
+              </div>
             </div>
           </motion.div>
         )}

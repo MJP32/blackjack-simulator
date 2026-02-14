@@ -66,8 +66,9 @@ export function useGameActions() {
           statsStore.recordDecision(decision);
 
           // In training mode, show feedback popup for every decision
-          if (settings.mode === 'training') {
-            gameStore.setDecisionFeedback(decision);
+          const currentMode = useSettingsStore.getState().mode;
+          if (currentMode === 'training') {
+            useGameStore.getState().setDecisionFeedback(decision);
           }
         }
       }

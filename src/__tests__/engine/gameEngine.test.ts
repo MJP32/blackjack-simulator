@@ -14,8 +14,8 @@ describe('GameEngine', () => {
       expect(state.players.length).toBe(3); // 2 AI + 1 human
     });
 
-    it('should place human at seat index 2', () => {
-      const engine = createEngine();
+    it('should place human at correct seat index', () => {
+      const engine = createEngine({ numberOfAIPlayers: 2, humanSeatPosition: 2 });
       const state = engine.getState();
       const human = state.players.find(p => p.isHuman);
       expect(human).toBeDefined();
@@ -72,14 +72,22 @@ describe('GameEngine', () => {
     });
 
     it('should have dealer first card face up, second face down', () => {
-      const engine = createEngine();
-      const humanIdx = engine.getHumanPlayerIndex();
-      engine.placeBet(humanIdx, 10);
-      engine.deal();
+      // Retry until we get a non-blackjack deal (dealer BJ reveals hole card)
+      for (let i = 0; i < 100; i++) {
+        const engine = createEngine({ allowInsurance: false });
+        const humanIdx = engine.getHumanPlayerIndex();
+        engine.placeBet(humanIdx, 10);
+        engine.deal();
 
-      const state = engine.getState();
-      expect(state.dealerHand.cards[0].faceUp).toBe(true);
-      expect(state.dealerHand.cards[1].faceUp).toBe(false);
+        if (engine.getPhase() === 'player_turn') {
+          const state = engine.getState();
+          expect(state.dealerHand.cards[0].faceUp).toBe(true);
+          expect(state.dealerHand.cards[1].faceUp).toBe(false);
+          return;
+        }
+      }
+      // If we never hit player_turn in 100 tries, something is wrong
+      throw new Error('Could not get a non-blackjack deal in 100 attempts');
     });
 
     it('should advance to player_turn after dealing (usually)', () => {

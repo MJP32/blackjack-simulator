@@ -7,9 +7,10 @@ interface ModalProps {
   title: string;
   children: ReactNode;
   actions?: ReactNode;
+  className?: string;
 }
 
-export default function Modal({ isOpen, onClose, title, children, actions }: ModalProps) {
+export default function Modal({ isOpen, onClose, title, children, actions, className }: ModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -21,7 +22,7 @@ export default function Modal({ isOpen, onClose, title, children, actions }: Mod
           onClick={onClose}
         >
           <motion.div
-            className="modal"
+            className={`modal ${className ?? ''}`}
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
