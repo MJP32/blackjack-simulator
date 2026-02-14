@@ -2330,7 +2330,7 @@ select.settings-field__input {
 
   /* ---- Player controls ---- */
   .player-controls {
-    bottom: 6px;
+    bottom: 24px;
     gap: 4px;
   }
 
