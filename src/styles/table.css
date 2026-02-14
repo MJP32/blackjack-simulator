@@ -2503,10 +2503,11 @@ select.settings-field__input {
 
   /* ---- Decision toast ---- */
   .decision-toast {
-    bottom: 8px;
+    top: 8px;
     right: 8px;
-    left: 8px;
-    max-width: none;
+    bottom: auto;
+    left: auto;
+    max-width: 55%;
     padding: 10px 12px;
   }
 
