@@ -2500,9 +2500,8 @@ select.settings-field__input {
   .bankroll-display {
     font-size: 12px;
     position: fixed;
-    top: auto;
-    bottom: 10px;
     left: 10px;
+    bottom: 70px;
     z-index: 20;
   }
 
