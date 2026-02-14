@@ -168,7 +168,7 @@ export default function GameTable() {
               className="player-seat-wrapper"
               style={{
                 left: pos.left,
-                top: player.isHuman ? `calc(${pos.top} + 40px)` : pos.top,
+                top: player.isHuman ? `calc(${pos.top} + 60px)` : pos.top,
               }}
             >
               <PlayerSeat
