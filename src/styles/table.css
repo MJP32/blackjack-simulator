@@ -2436,6 +2436,10 @@ select.settings-field__input {
     transform: translateY(-8%);
   }
 
+  .player-seat-wrapper--human {
+    margin-top: 30px;
+  }
+
   /* ---- Player controls ---- */
   .player-controls {
     bottom: 64px;

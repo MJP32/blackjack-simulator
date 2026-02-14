@@ -165,7 +165,7 @@ export default function GameTable() {
           return (
             <div
               key={player.seatIndex}
-              className="player-seat-wrapper"
+              className={`player-seat-wrapper ${player.isHuman ? 'player-seat-wrapper--human' : ''}`}
               style={{
                 left: pos.left,
                 top: player.isHuman ? `calc(${pos.top} + 60px)` : pos.top,
