@@ -44,11 +44,12 @@ interface PlayerSeatProps {
 
 export default function PlayerSeat({ player, isActive }: PlayerSeatProps) {
   const colors = player.isHuman ? HUMAN_COLORS : (PLAYER_COLORS[player.name] ?? HUMAN_COLORS);
+  const isSplit = player.hands.length > 1;
 
   const seatClass = [
     'player-seat',
     isActive ? 'player-seat--active' : '',
-    player.isHuman ? 'player-seat--human' : '',
+    player.isHuman ? 'player-seat--human' : 'player-seat--ai',
   ].filter(Boolean).join(' ');
 
   const nameClass = player.isHuman
@@ -60,23 +61,37 @@ export default function PlayerSeat({ player, isActive }: PlayerSeatProps) {
       <span className={nameClass}>
         <AvatarBust skin={colors.skin} hair={colors.hair} shirt={colors.shirt} />
         {player.name}
+        {player.isHuman && <span className="player-seat__you-badge">You</span>}
       </span>
-      {player.hands.map((hand, i) => (
-        <div key={i}>
-          <Hand hand={hand} />
-          {hand.result && hand.result !== 'pending' && (
-            <div className={`player-seat__result player-seat__result--${hand.result}`}>
-              {hand.result === 'blackjack' ? 'BLACKJACK!' :
-               hand.result === 'win' ? 'WIN' :
-               hand.result === 'loss' ? 'LOSS' :
-               hand.result === 'push' ? 'PUSH' : 'SURRENDER'}
-              {hand.payout !== undefined && hand.payout !== 0 && (
-                <> ({hand.payout > 0 ? '+' : ''}{formatCurrency(hand.payout)})</>
+      <div className={isSplit ? 'player-seat__hands player-seat__hands--split' : 'player-seat__hands'}>
+        {player.hands.map((hand, i) => {
+          const isActiveHand = isActive && i === player.currentHandIndex;
+          return (
+            <div
+              key={i}
+              className={`player-seat__hand-slot ${isActiveHand ? 'player-seat__hand-slot--active' : ''} ${isSplit ? 'player-seat__hand-slot--split' : ''}`}
+            >
+              {isSplit && (
+                <span className="player-seat__hand-label">
+                  Hand {i + 1}{hand.isDoubled ? ' (2x)' : ''} — {formatCurrency(hand.bet)}
+                </span>
+              )}
+              <Hand hand={hand} />
+              {hand.result && hand.result !== 'pending' && (
+                <div className={`player-seat__result player-seat__result--${hand.result}`}>
+                  {hand.result === 'blackjack' ? 'BLACKJACK!' :
+                   hand.result === 'win' ? 'WIN' :
+                   hand.result === 'loss' ? 'LOSS' :
+                   hand.result === 'push' ? 'PUSH' : 'SURRENDER'}
+                  {hand.payout !== undefined && hand.payout !== 0 && (
+                    <> ({hand.payout > 0 ? '+' : ''}{formatCurrency(hand.payout)})</>
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
-      ))}
+          );
+        })}
+      </div>
       <span className="player-seat__bankroll">{formatCurrency(player.bankroll)}</span>
     </div>
   );

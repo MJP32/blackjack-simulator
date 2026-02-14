@@ -88,9 +88,8 @@ export default function Header({ onToggleMobileSidebar }: { onToggleMobileSideba
   return (
     <>
       <header className="header">
-        <span className="header__title">Blackjack Trainer</span>
-
-        <div className="header__controls">
+        <div className="header__left">
+          <span className="header__title">Blackjack Trainer</span>
           <div className="mode-selector">
             {MODES.map(m => (
               <button
@@ -102,7 +101,9 @@ export default function Header({ onToggleMobileSidebar }: { onToggleMobileSideba
               </button>
             ))}
           </div>
+        </div>
 
+        <div className="header__center">
           <div className="speed-selector">
             {SPEEDS.map(s => (
               <button
@@ -114,7 +115,9 @@ export default function Header({ onToggleMobileSidebar }: { onToggleMobileSideba
               </button>
             ))}
           </div>
+        </div>
 
+        <div className="header__right">
           <CasinoRealismHUD />
 
           <Button variant="secondary" size="small" onClick={() => setShowRules(true)}>
