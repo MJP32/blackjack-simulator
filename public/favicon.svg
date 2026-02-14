@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Card background -->
+  <rect x="8" y="4" width="48" height="56" rx="6" ry="6" fill="#fff" stroke="#1a1a2e" stroke-width="2"/>
+  <!-- Spade symbol -->
+  <path d="M32 14 C32 14 18 28 18 34 C18 39 22 42 27 40 C25 44 24 48 24 48 L40 48 C40 48 39 44 37 40 C42 42 46 39 46 34 C46 28 32 14 32 14Z" fill="#1a1a2e"/>
+  <!-- A top-left -->
+  <text x="14" y="16" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#1a1a2e">A</text>
+  <!-- A bottom-right (rotated) -->
+  <text x="50" y="54" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#1a1a2e" transform="rotate(180 50 50)">A</text>
+</svg>

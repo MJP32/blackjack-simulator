@@ -249,6 +249,38 @@ export default function Header() {
               <p>Assign each card a value: <strong>2–6 = +1</strong>, <strong>7–9 = 0</strong>, <strong>10–A = −1</strong>. The running count is the sum of all counted cards. Divide by decks remaining to get the <strong>true count</strong>, which guides bet sizing — bet more when the count is high (deck favors the player).</p>
             </section>
 
+            <section className="rules-section">
+              <h3 className="rules-section__title">Play Strategies</h3>
+              <ul className="rules-list">
+                <li><strong>Basic Strategy</strong> — Mathematically optimal play for every hand based on your total vs. the dealer's upcard. No card counting involved. Reduces the house edge to about 0.5%.</li>
+                <li><strong>Hi-Lo</strong> — The most popular counting system. Cards 2-6 are +1, 7-9 are 0, 10-A are -1. Uses the true count (running count / decks remaining) plus the Illustrious 18 deviations to adjust play decisions at key count thresholds.</li>
+                <li><strong>KO (Knock-Out)</strong> — An unbalanced system where 7 also counts as +1. Because the count doesn't start and end at zero, you use the running count directly without converting to true count. Simpler to learn than Hi-Lo.</li>
+                <li><strong>Hi-Opt I</strong> — Cards 3-6 are +1, 10s are -1, aces and 2s are neutral. More accurate than Hi-Lo for playing decisions but requires a separate ace side count for insurance and betting.</li>
+                <li><strong>Hi-Opt II</strong> — A multi-level system: 4,5 count as +2, 2,3,6,7 as +1, 10s as -2. Higher accuracy but significantly harder to use in practice.</li>
+                <li><strong>Omega II</strong> — Multi-level with 9 counting as -1, 4-6 as +2, and 10s as -2. One of the most accurate systems available, best suited for serious players.</li>
+                <li><strong>Zen Count</strong> — Multi-level balanced system: aces are -1, 4-6 are +2, 2-3,7 are +1, 10s are -2. Good balance of accuracy and usability.</li>
+                <li><strong>Wonging</strong> — Named after Stanford Wong. Back-count the shoe from behind and only sit down to play when the true count is favorable. Sit back out when it drops. Eliminates negative-count hands entirely.</li>
+                <li><strong>Mimic Dealer</strong> — Play exactly like the dealer: hit until 17+, no doubling, splitting, or surrendering. This is a losing strategy used as a baseline comparison.</li>
+                <li><strong>Never Bust</strong> — Stand on any hard 12 or higher to avoid busting. Extremely conservative and a significant losing strategy, but useful to see how fear of busting affects results.</li>
+              </ul>
+            </section>
+
+            <section className="rules-section">
+              <h3 className="rules-section__title">Betting Strategies</h3>
+              <ul className="rules-list">
+                <li><strong>Flat Bet</strong> — Bet the same amount every hand. Simple and low-variance. The baseline for comparing other systems.</li>
+                <li><strong>Bet Spread</strong> — Scale your bet with the true count using preset multipliers (e.g., 1-4, 1-8, 1-12). This is how card counters exploit a positive count by betting more when the deck favors the player.</li>
+                <li><strong>Kelly Criterion</strong> — Bet a fraction of your bankroll proportional to your edge. Mathematically optimal for long-term growth but can be volatile at full Kelly. Quarter or half Kelly is more practical.</li>
+                <li><strong>Martingale</strong> — Double your bet after every loss, reset after a win. Recovers losses quickly in theory, but can hit table limits or bankroll limits fast during losing streaks.</li>
+                <li><strong>Paroli</strong> — Double your bet after a win, up to 3 consecutive wins, then reset. A positive progression that tries to capitalize on winning streaks while limiting downside.</li>
+                <li><strong>1-3-2-6</strong> — Bet 1, 3, 2, then 6 units on consecutive wins. If you lose at any step, restart at 1. Designed to capture streaks while protecting profits from the first two wins.</li>
+                <li><strong>Oscar's Grind</strong> — Increase your bet by one unit after a win. After a loss, keep the same bet. Goal is to win exactly one unit per series, then reset. Very low variance.</li>
+                <li><strong>Fibonacci</strong> — Follow the Fibonacci sequence (1, 1, 2, 3, 5, 8, 13...) on losses. After a win, step back two positions. More gradual than Martingale but still a negative progression.</li>
+                <li><strong>D'Alembert</strong> — Add one unit after a loss, subtract one after a win. A gentle negative progression that assumes wins and losses will eventually balance out.</li>
+                <li><strong>Labouchere</strong> — Start with a number sequence (1-2-3-4). Bet the sum of the first and last numbers. Cross them off on a win; add the lost bet to the end on a loss. Complete when all numbers are crossed off.</li>
+              </ul>
+            </section>
+
             <div className="rules-section" style={{ textAlign: 'center', paddingTop: '8px' }}>
               <Button variant="gold" onClick={() => setShowStrategy(true)}>
                 Optimal Strategy Chart
