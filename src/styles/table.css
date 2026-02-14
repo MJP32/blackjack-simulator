@@ -2313,7 +2313,12 @@ select.settings-field__input {
   }
 
   .speed-selector {
-    display: none;
+    display: flex;
+  }
+
+  .speed-selector__btn {
+    padding: 3px 7px;
+    font-size: 10px;
   }
 
   .btn--small {
@@ -2494,6 +2499,11 @@ select.settings-field__input {
   /* ---- Bankroll display ---- */
   .bankroll-display {
     font-size: 12px;
+    position: fixed;
+    top: auto;
+    bottom: 10px;
+    left: 10px;
+    z-index: 20;
   }
 
   /* ---- Insurance bar ---- */
